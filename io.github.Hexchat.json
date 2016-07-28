@@ -12,8 +12,6 @@
     "finish-args": [
         /* X11 + XShm access */
         "--share=ipc", "--socket=x11",
-        /* Wayland access */
-        "--socket=wayland",
         /* Needs to talk to the network: */
         "--share=network",
         /* Needed for dconf to work */
@@ -65,7 +63,6 @@
             "config-opts": [
               "--disable-perl",
               "--disable-perl_old",
-              "--disable-theme-manager",
               "--disable-stack-protector",
               "--enable-python=python3"
             ],
