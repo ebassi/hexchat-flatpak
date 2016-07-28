@@ -2,7 +2,7 @@ MANIFEST = io.github.Hexchat.json
 BUILD = build.sh
 UPDATE_REPO = update-repo.sh
 
-all:
+all: update-repo
 
 build: $(MANIFEST)
 	sh $(BUILD) $(MANIFEST)
