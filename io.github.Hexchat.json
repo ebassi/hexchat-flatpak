@@ -1,0 +1,80 @@
+{
+    "app-id": "io.github.Hexchat",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.20",
+    "sdk": "org.gnome.Sdk",
+    "command": "hexchat",
+    "tags": ["stable"],
+    "desktop-file-name-prefix": "(Stable) ",
+    "rename-desktop-file": "hexchat.desktop",
+    "rename-appdata-file": "hexchat.appdata.xml",
+    "rename-icon": "hexchat",
+    "finish-args": [
+        /* X11 + XShm access */
+        "--share=ipc", "--socket=x11",
+        /* Wayland access */
+        "--socket=wayland",
+        /* Needs to talk to the network: */
+        "--share=network",
+        /* Needed for dconf to work */
+        "--filesystem=xdg-run/dconf", "--filesystem=~/.config/dconf:ro",
+        "--talk-name=ca.desrt.dconf", "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+    ],
+    "build-options" : {
+        "cflags": "-O2 -g",
+        "cxxflags": "-O2 -g"
+    },
+    "cleanup": ["/include", "/lib/pkgconfig",
+                "/share/pkgconfig", "/share/aclocal",
+                "/man", "/share/man", "/share/gtk-doc",
+                "*.la", "*.a",
+                "/lib/girepository-1.0",
+                "/share/dbus-1", "/share/doc", "/share/gir-1.0"
+    ],
+    "modules": [
+        {
+            "name": "lua",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://www.lua.org/ftp/lua-5.3.2.tar.gz",
+                    "sha256": "c740c7bb23a936944e1cc63b7c3c5351a8976d7867c5252c8854f7b2af9da68f"
+                },
+                {
+                    "type": "shell",
+                    "commands": [ "mv src/luaconf.h src/luaconf.h.template.in" ]
+                },
+                /* Patches from the Fedora package */
+                {
+                    "type": "patch",
+                    "path": "lua-5.3.0-autotoolize.patch"
+                },
+                {
+                    "type": "patch",
+                    "path": "lua-5.3.0-idsize.patch"
+                },
+                {
+                    "type": "shell",
+                    "commands": [ "autoreconf -i" ]
+                }
+            ],
+            "cleanup": [ "/bin" ]
+        },
+        {
+            "name": "hexchat",
+            "config-opts": [
+              "--disable-perl",
+              "--disable-perl_old",
+              "--disable-theme-manager",
+              "--enable-python=python3"
+            ],
+            "make-args": [ "V=1" ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/hexchat/hexchat.git"
+                }
+            ]
+        }
+    ]
+}
