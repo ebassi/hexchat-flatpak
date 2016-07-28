@@ -66,6 +66,7 @@
               "--disable-perl",
               "--disable-perl_old",
               "--disable-theme-manager",
+              "--disable-stack-protector",
               "--enable-python=python3"
             ],
             "make-args": [ "V=1" ],
